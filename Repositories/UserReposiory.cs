@@ -50,16 +50,16 @@ namespace TaskLogix.Repositories
 
 
             var wordReplacements = new Dictionary<string, string>
-        {
-            {"APARTMENT", "APT" },
-            {"AVENUE", "AVE" },
-            {"ROAD", "RD" },
-            {"STREET", "ST" },
-            {"BOULEVARD", "BLVD" },
-            {"(NO |#|NUMBER )([0-9]+)(.)", "N $2RD$3" },
-            {"(NO |#|NUMBER )", "" }
+            {
+                {"APARTMENT", "APT" },
+                {"AVENUE", "AVE" },
+                {"ROAD", "RD" },
+                {"STREET", "ST" },
+                {"BOULEVARD", "BLVD" },
+                {"(NO |#|NUMBER )([0-9]+)(.)", "N $2RD$3" },
+                {"(NO |#|NUMBER )", "" }
 
-        };
+            };
 
             foreach (var replacement in wordReplacements)
             {
