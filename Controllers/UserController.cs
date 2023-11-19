@@ -1,9 +1,7 @@
 using System.Security.Claims;
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using TaskLogix.Dtos;
 using TaskLogix.Models;
 using TaskLogix.Repositories;
@@ -44,6 +42,11 @@ namespace TaskLogix.Controllers
             {
                 return NotFound("User not found");
             }
+            else if (user.Role != Roles.User)
+            {
+                return BadRequest("Invalid credentials or not an admin user");
+
+            }
 
             if (string.IsNullOrEmpty(user.Password))
             {
@@ -74,6 +77,7 @@ namespace TaskLogix.Controllers
         public async Task<IActionResult> DeleteCourseFromUSer(int courseId)
         {
             var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
             if (currentUserId == null)
             {
                 return Unauthorized();

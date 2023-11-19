@@ -14,16 +14,24 @@ namespace TaskLogix.Seeders
                 var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
                 var hashPassword = new PasswordHasher<string>();
                 string hashedPassword = hashPassword.HashPassword(null, "admin1234");
-                var admin = new User
+                var adminExist = dbContext.Users.Where(c => c.Role == Roles.Admin).FirstOrDefault();
+                if (adminExist == null)
                 {
-                    FirstName = "Admin",
-                    LastName = "Admin",
-                    Email = "admin@gmail.com",
-                    Password = hashedPassword,
-                    Role = Roles.Admin
-                };
-                dbContext.Users.Add(admin);
-                dbContext.SaveChanges();
+                    var admin = new User
+                    {
+                        FirstName = "Admin",
+                        LastName = "Admin",
+                        Email = "admin@gmail.com",
+                        Password = hashedPassword,
+                        Role = Roles.Admin,
+                        Address = "57 No 123 Ave",
+                        PhoneNumber = "999 999-999",
+
+                    };
+                    dbContext.Users.Add(admin);
+                    dbContext.SaveChanges();
+                }
+
             }
         }
 

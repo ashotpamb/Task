@@ -81,7 +81,11 @@ namespace TaskLogix.Repositories
 
         public IEnumerable<User> GetUsers()
         {
-            return _context.Users.ToList();
+            return _context.Users
+                .Where(u => u.Role == Roles.User)
+                .Include(u => u.UserCourses)
+                    .ThenInclude(uc => uc.Course)
+                .ToList();
         }
 
         public User GetUserById(int Id)
