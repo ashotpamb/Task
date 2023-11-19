@@ -75,7 +75,7 @@ else if (app.Environment.IsProduction())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "BX24 V1");
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "TaskLogix V1");
         c.RoutePrefix = "swagger";
         c.DisplayRequestDuration();
         c.EnableFilter();
