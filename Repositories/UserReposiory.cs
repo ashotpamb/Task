@@ -174,15 +174,5 @@ namespace TaskLogix.Repositories
             return coursesForUser;
         }
 
-        public async Task GetcourseForUser(int userId, int courseId)
-        {
-            // var user = GetUserById(userId);
-            // if (user == null)
-            // {
-            //     throw new Exception("User not found");
-            // }
-
-            // var courseFor
-        }
     }
 }
