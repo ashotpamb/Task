@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
+using TaskLogix.Models;
 
 namespace TaskLogix.Dtos
 {
@@ -25,8 +26,10 @@ namespace TaskLogix.Dtos
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DateOfBirth { get; set; }
 
-        [RegularExpression(@"^\(\d{3}\) \d{3}-\d{3}$", ErrorMessage = "Phone number must be in the format (999) 999-999")]
+        // [RegularExpression(@"^\\d{3}\ \d{3}-\d{3}$", ErrorMessage = "Phone number must be in the format 999 999-999")]
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
+
+        public Roles Role => Roles.User;
     }
 }

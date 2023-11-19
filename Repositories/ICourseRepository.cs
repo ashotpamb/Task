@@ -6,6 +6,8 @@ namespace TaskLogix.Repositories
     {
         public Task CreateCourse(Course course);
         bool CheckCourseExisting(string courseName);
+        List<Course> GetAllCourses();
+
         bool SaveChanges();
     }
 }

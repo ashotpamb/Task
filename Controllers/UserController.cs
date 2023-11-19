@@ -89,8 +89,9 @@ namespace TaskLogix.Controllers
 
         //If user logged and trying assign course
         [HttpPost("assign-course-to-user/{courseId}")]
-        public async Task<IActionResult> AssignCourseToUser(int courseId)
+        public async Task<IActionResult> AssignCourseToUser(string courseId)
         {
+
             var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (currentUserId == null)
             {

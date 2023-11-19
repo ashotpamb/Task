@@ -89,35 +89,45 @@ namespace TaskLogix.Repositories
             return _context.Users.FirstOrDefault(u => u.ID == Id);
         }
 
-        public async Task AssignCourseToUser(int userId, int courseId)
+        public async Task AssignCourseToUser(int userId, string courseIds)
         {
             var user = _context.Users.FirstOrDefault(u => u.ID == userId);
+            Console.WriteLine(courseIds);
             if (user == null)
             {
                 throw new Exception("User not found");
             }
-            var course = _context.Courses.FirstOrDefault(c => c.ID == courseId);
+            var courseIdArray = courseIds.Split(',').Select(int.Parse).ToArray();
 
-            if (course == null)
+            var courses = _context.Courses.Where(c => courseIdArray.Contains(c.ID)).ToList();
+
+            foreach (var courseId in courseIdArray)
             {
-                throw new Exception("Course not found");
+                var course = courses.FirstOrDefault(c => c.ID == courseId);
+
+                if (course == null)
+                {
+                    throw new Exception($"Course with ID {courseId} not found");
+                }
+
+                var existingUserCourse = _context.UserCourses
+                                        .FirstOrDefault(uc => uc.UserId == userId && uc.CourseId == courseId);
+
+                if (existingUserCourse != null)
+                {
+                    throw new Exception($"Course with ID {courseId} already assigned to the user");
+                }
+
+                var newUserCourse = new UserCourse
+                {
+                    UserId = userId,
+                    CourseId = courseId
+                };
+
+                await _context.UserCourses.AddAsync(newUserCourse);
             }
 
-            var existingUserCourse = _context.UserCourses
-                                .FirstOrDefault(uc => uc.UserId == userId && uc.CourseId == courseId);
 
-            if (existingUserCourse != null)
-            {
-                throw new Exception("Course already assigned to the user");
-            }
-
-            var newUserCourse = new UserCourse
-            {
-                UserId = userId,
-                CourseId = courseId
-            };
-
-            await _context.UserCourses.AddAsync(newUserCourse);
         }
 
         public async Task DeleteCourse(int userId, int courseId)
@@ -134,7 +144,7 @@ namespace TaskLogix.Repositories
             {
                 throw new Exception("Course not found");
             }
-           _context.UserCourses.Remove(courseForUser);
+            _context.UserCourses.Remove(courseForUser);
             await _context.SaveChangesAsync();
         }
 

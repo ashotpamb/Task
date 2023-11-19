@@ -23,8 +23,12 @@ namespace TaskLogix.Models
 
         public string Address { get; set; }
 
-        public List<UserCourse> UserCourses {get;set;}
-
-
+        public List<UserCourse> UserCourses { get; set; }
+        public Roles Role { get; set; }
+    }
+    public enum Roles
+    {
+        Admin,
+        User
     }
 }

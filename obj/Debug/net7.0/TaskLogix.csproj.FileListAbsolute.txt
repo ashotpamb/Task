@@ -1,3 +1,10 @@
+/var/www/dotnet/TaskLogix/obj/Debug/net7.0/TaskLogix.csproj.AssemblyReference.cache
+/var/www/dotnet/TaskLogix/obj/Debug/net7.0/TaskLogix.GeneratedMSBuildEditorConfig.editorconfig
+/var/www/dotnet/TaskLogix/obj/Debug/net7.0/TaskLogix.AssemblyInfoInputs.cache
+/var/www/dotnet/TaskLogix/obj/Debug/net7.0/TaskLogix.AssemblyInfo.cs
+/var/www/dotnet/TaskLogix/obj/Debug/net7.0/TaskLogix.csproj.CoreCompileInputs.cache
+/var/www/dotnet/TaskLogix/obj/Debug/net7.0/TaskLogix.MvcApplicationPartsAssemblyInfo.cs
+/var/www/dotnet/TaskLogix/obj/Debug/net7.0/TaskLogix.MvcApplicationPartsAssemblyInfo.cache
 /var/www/dotnet/TaskLogix/bin/Debug/net7.0/appsettings.Development.json
 /var/www/dotnet/TaskLogix/bin/Debug/net7.0/appsettings.json
 /var/www/dotnet/TaskLogix/bin/Debug/net7.0/TaskLogix
@@ -31,13 +38,6 @@
 /var/www/dotnet/TaskLogix/bin/Debug/net7.0/Swashbuckle.AspNetCore.SwaggerUI.dll
 /var/www/dotnet/TaskLogix/bin/Debug/net7.0/System.CodeDom.dll
 /var/www/dotnet/TaskLogix/bin/Debug/net7.0/System.IdentityModel.Tokens.Jwt.dll
-/var/www/dotnet/TaskLogix/obj/Debug/net7.0/TaskLogix.csproj.AssemblyReference.cache
-/var/www/dotnet/TaskLogix/obj/Debug/net7.0/TaskLogix.GeneratedMSBuildEditorConfig.editorconfig
-/var/www/dotnet/TaskLogix/obj/Debug/net7.0/TaskLogix.AssemblyInfoInputs.cache
-/var/www/dotnet/TaskLogix/obj/Debug/net7.0/TaskLogix.AssemblyInfo.cs
-/var/www/dotnet/TaskLogix/obj/Debug/net7.0/TaskLogix.csproj.CoreCompileInputs.cache
-/var/www/dotnet/TaskLogix/obj/Debug/net7.0/TaskLogix.MvcApplicationPartsAssemblyInfo.cs
-/var/www/dotnet/TaskLogix/obj/Debug/net7.0/TaskLogix.MvcApplicationPartsAssemblyInfo.cache
 /var/www/dotnet/TaskLogix/obj/Debug/net7.0/staticwebassets/msbuild.TaskLogix.Microsoft.AspNetCore.StaticWebAssets.props
 /var/www/dotnet/TaskLogix/obj/Debug/net7.0/staticwebassets/msbuild.build.TaskLogix.props
 /var/www/dotnet/TaskLogix/obj/Debug/net7.0/staticwebassets/msbuild.buildMultiTargeting.TaskLogix.props

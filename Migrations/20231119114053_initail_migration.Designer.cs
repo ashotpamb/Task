@@ -11,8 +11,8 @@ using TaskLogix.Data;
 namespace TaskLogix.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231118161021_Update_User_Model")]
-    partial class UpdateUserModel
+    [Migration("20231119114053_initail_migration")]
+    partial class initailmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -73,6 +73,9 @@ namespace TaskLogix.Migrations
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
 
                     b.HasKey("ID");
 

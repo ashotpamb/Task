@@ -13,7 +13,7 @@ namespace TaskLogix.Repositories
         User GetUserById(int Id);
 
         User GetCoursesForUser(int userId);
-        Task AssignCourseToUser(int userId, int courseId);
+        Task AssignCourseToUser(int userId, string courseId);
         Task DeleteCourse(int userId, int courseId);
         Task GetcourseForUser(int userId, int courseId);
         Task DeleteAssignedCourse(int userId, Course course);

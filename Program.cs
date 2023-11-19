@@ -17,7 +17,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 //Database configuration
-builder.Services.AddDbContext<DataContext>(options => 
+builder.Services.AddDbContext<DataContext>(options =>
 {
     var concetionString = builder.Configuration.GetConnectionString("mysql");
     options.UseMySql(concetionString, ServerVersion.AutoDetect(concetionString));
@@ -47,17 +47,39 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICourseReposiotry, CourseRepository>();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalhost",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:3000") 
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
 // builder.Services.AddControllers().AddJsonOptions(x =>
 //                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 
 var app = builder.Build();
-
+app.UseCors("AllowLocalhost");
 CourseSeeder.Seed(app.Services.CreateScope().ServiceProvider);
+AdminSeeder.Seed(app.Services.CreateScope().ServiceProvider);
 
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+else if (app.Environment.IsProduction())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "BX24 V1");
+        c.RoutePrefix = "swagger";
+        c.DisplayRequestDuration();
+        c.EnableFilter();
+    });
 }
 
 app.UseHttpsRedirection();

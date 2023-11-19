@@ -71,6 +71,9 @@ namespace TaskLogix.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
+
                     b.HasKey("ID");
 
                     b.HasIndex("Email")

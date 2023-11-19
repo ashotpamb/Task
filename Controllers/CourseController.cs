@@ -31,5 +31,11 @@ namespace TaskLogix.Controllers
             }
             return BadRequest("Course already exist");
         }
+        [HttpGet("courses")]
+        public async Task<ActionResult<CourseReadDto>> GetAllCourses()
+        {
+
+            return Ok(_mapper.Map<List<CourseReadDto>>(_repository.GetAllCourses()));
+        }
     }
 }

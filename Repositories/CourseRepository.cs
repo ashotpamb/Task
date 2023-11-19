@@ -30,5 +30,10 @@ namespace TaskLogix.Models
         {
             return _context.SaveChanges() >= 0;
         }
+
+        public List<Course> GetAllCourses()
+        {
+            return _context.Courses.ToList();
+        }
     }
 }
