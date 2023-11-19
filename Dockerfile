@@ -15,4 +15,4 @@ FROM base AS final
 WORKDIR /app
 COPY --from=build /app/publish .
 COPY ["www-root", "www-root"] 
-ENTRYPOINT ["dotnet", "BX24.dll"]
+ENTRYPOINT ["dotnet", "TaskLogix.dll"]
