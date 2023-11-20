@@ -45,7 +45,7 @@ namespace TaskLogix.Controllers
             }
             else if (user.Role != Roles.User)
             {
-                return BadRequest("Invalid credentials or not an admin user");
+                return BadRequest("User not found");
 
             }
 
@@ -82,7 +82,7 @@ namespace TaskLogix.Controllers
             {
                 if (token.ValidTo < DateTime.UtcNow)
                 {
-                    return Unauthorized();
+                    return Unauthorized("Unauthorized");
                 }
             }
             var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -118,13 +118,13 @@ namespace TaskLogix.Controllers
             {
                 if (token.ValidTo < DateTime.UtcNow)
                 {
-                    return Unauthorized();
+                    return Unauthorized("Unauthorized");
                 }
             }
             var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (currentUserId == null)
             {
-                return Unauthorized();
+                return BadRequest("User not found");
             }
 
             try
