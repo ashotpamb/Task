@@ -27,7 +27,7 @@ namespace TaskLogix.Services
             issuer: _configuration["Jwt:Issuer"],
             audience: _configuration["Jwt:Audience"],
             claims: claims,
-            expires: DateTime.Now.AddMinutes(1),
+            expires: DateTime.UtcNow.AddSeconds(15),
             signingCredentials: credentials
             );
 

@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
@@ -76,26 +77,50 @@ namespace TaskLogix.Controllers
         [HttpDelete("delete-course-from-user/{courseId}")]
         public async Task<IActionResult> DeleteCourseFromUSer(int courseId)
         {
+            var token = CheckTokenExpired();
+            if (token != null)
+            {
+                if (token.ValidTo < DateTime.UtcNow)
+                {
+                    return Unauthorized();
+                }
+            }
             var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
             if (currentUserId == null)
             {
-                return Unauthorized();
+                return BadRequest("User not found");
             }
-            await _userRepository.DeleteCourse(Convert.ToInt32(currentUserId), courseId);
-            var user = _userRepository.GetCoursesForUser(Convert.ToInt32(currentUserId));
-            UserReadDto userReadDto = _mapper.Map<UserReadDto>(user);
-            userReadDto.Courses = user.UserCourses
-                .Select(uc => _mapper.Map<CourseReadDto>(uc.Course))
-                .ToList();
-            return Ok(userReadDto);
+            try
+            {
+                await _userRepository.DeleteCourse(Convert.ToInt32(currentUserId), courseId);
+                var user = _userRepository.GetCoursesForUser(Convert.ToInt32(currentUserId));
+                UserReadDto userReadDto = _mapper.Map<UserReadDto>(user);
+                userReadDto.Courses = user.UserCourses
+                    .Select(uc => _mapper.Map<CourseReadDto>(uc.Course))
+                    .ToList();
+                return Ok(userReadDto);
+            }
+            catch (Exception)
+            {
+
+                return BadRequest("Course not found");
+            }
+
         }
 
         //If user logged and trying assign course
         [HttpPost("assign-course-to-user/{courseId}")]
         public async Task<IActionResult> AssignCourseToUser(string courseId)
         {
+            var token = CheckTokenExpired();
 
+            if (token != null)
+            {
+                if (token.ValidTo < DateTime.UtcNow)
+                {
+                    return Unauthorized();
+                }
+            }
             var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (currentUserId == null)
             {
@@ -119,5 +144,24 @@ namespace TaskLogix.Controllers
 
 
         }
+        private JwtSecurityToken CheckTokenExpired()
+        {
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            var handler = new JwtSecurityTokenHandler();
+
+            if (handler.CanReadToken(token))
+            {
+                var tokenObj = handler.ReadToken(token) as JwtSecurityToken;
+
+                if (tokenObj != null)
+                {
+                    return tokenObj;
+                }
+            }
+
+            return null;
+        }
+
+
     }
 }
