@@ -3,7 +3,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace TaskLogix.Attributes
 {
-    public class AddRequiredHeaderParameter : IOperationFilter
+    public class AddRequiredHeaderParameter : Attribute,IOperationFilter
     {
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {

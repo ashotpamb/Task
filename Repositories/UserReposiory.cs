@@ -90,7 +90,10 @@ namespace TaskLogix.Repositories
 
         public User GetUserById(int Id)
         {
-            return _context.Users.FirstOrDefault(u => u.ID == Id);
+            return _context.Users
+                    .Include(u => u.UserCourses)
+                        .ThenInclude(uc => uc.Course)
+                    .FirstOrDefault(u => u.ID == Id);;
         }
 
         public async Task AssignCourseToUser(int userId, string courseIds)

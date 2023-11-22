@@ -81,11 +81,13 @@ else if (app.Environment.IsProduction())
         c.EnableFilter();
     });
 }
+// app.UseJwtAuthMiddlware();
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
 app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.MapControllers();
 

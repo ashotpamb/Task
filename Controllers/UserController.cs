@@ -34,6 +34,32 @@ namespace TaskLogix.Controllers
             return Ok(new { Message = "User registred success", Email = user.Email });
         }
 
+
+        [HttpGet("UserData")]
+        public IActionResult Login()
+        {
+            var token = CheckTokenExpired();
+            if (token != null)
+            {
+                if (token.ValidTo < DateTime.UtcNow)
+                {
+                    return Unauthorized("Unauthorized");
+                }
+            }
+            else if (token == null)
+            {
+                return BadRequest("Auth token missing");
+            }
+            var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var user = _userRepository.GetUserById(Convert.ToInt32(currentUserId));
+
+            var userModel = _mapper.Map<UserReadDto>(user);
+            userModel.Courses = user.UserCourses
+                .Select(uc => _mapper.Map<CourseReadDto>(uc.Course))
+                .ToList();
+            return Ok(userModel);
+        }
+
         [HttpPost("Login")]
         public IActionResult Login([FromBody] UserLoginModel userLoginModel)
         {
@@ -65,7 +91,7 @@ namespace TaskLogix.Controllers
             switch (result)
             {
                 case PasswordVerificationResult.Success:
-                    return Ok(new { Token = _userRepository.GenerateToken(user.ID.ToString()), Model = userModel });
+                    return Ok(new { Token = _userRepository.GenerateToken(user.ID.ToString()) });
                 case PasswordVerificationResult.Failed:
                     return NotFound("Wrong Password");
                 default:
@@ -112,15 +138,7 @@ namespace TaskLogix.Controllers
         [HttpPost("assign-course-to-user/{courseId}")]
         public async Task<IActionResult> AssignCourseToUser(string courseId)
         {
-            var token = CheckTokenExpired();
 
-            if (token != null)
-            {
-                if (token.ValidTo < DateTime.UtcNow)
-                {
-                    return Unauthorized("Unauthorized");
-                }
-            }
             var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (currentUserId == null)
             {
