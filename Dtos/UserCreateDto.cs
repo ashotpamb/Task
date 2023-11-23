@@ -4,6 +4,8 @@ using TaskLogix.Models;
 
 namespace TaskLogix.Dtos
 {
+    #pragma warning disable CS8618
+
     public class UserCreateDto
     {
         [Required]

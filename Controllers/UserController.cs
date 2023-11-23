@@ -36,7 +36,7 @@ namespace TaskLogix.Controllers
 
 
         [HttpGet("UserData")]
-        public IActionResult Login()
+        public IActionResult UserData()
         {
             var token = CheckTokenExpired();
             if (token != null)
@@ -135,8 +135,8 @@ namespace TaskLogix.Controllers
         }
 
         //If user logged and trying assign course
-        [HttpPost("assign-course-to-user/{courseId}")]
-        public async Task<IActionResult> AssignCourseToUser(string courseId)
+        [HttpPost("assign-course-to-user/{courseIds}")]
+        public async Task<IActionResult> AssignCourseToUser(string courseIds)
         {
 
             var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -147,7 +147,7 @@ namespace TaskLogix.Controllers
 
             try
             {
-                await _userRepository.AssignCourseToUser(Convert.ToInt32(currentUserId), courseId);
+                await _userRepository.AssignCourseToUser(Convert.ToInt32(currentUserId), courseIds);
                 _userRepository.SaveChanges();
                 var user = _userRepository.GetCoursesForUser(Convert.ToInt32(currentUserId));
                 var userReadDto = _mapper.Map<UserReadDto>(user);

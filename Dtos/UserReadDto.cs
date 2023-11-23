@@ -3,6 +3,8 @@ using TaskLogix.Models;
 
 namespace TaskLogix.Dtos
 {
+    #pragma warning disable CS8618
+
     public class UserReadDto
     {
 
@@ -25,5 +27,6 @@ namespace TaskLogix.Dtos
         public string Address { get; set; }
 
         public List<CourseReadDto> Courses { get; set; }
+        public List<ModelFiles> Files { get; set; }
     }
 }

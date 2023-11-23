@@ -25,6 +25,8 @@ namespace TaskLogix.Models
 
         public List<UserCourse> UserCourses { get; set; }
         public Roles Role { get; set; }
+
+        // public List<ModelFiles> Files {get;set;}
     }
     public enum Roles
     {

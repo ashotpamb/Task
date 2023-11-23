@@ -11,8 +11,8 @@ using TaskLogix.Data;
 namespace TaskLogix.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231119114053_initail_migration")]
-    partial class initailmigration
+    [Migration("20231123114106_DB_UPSERT_V1")]
+    partial class DBUPSERTV1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,6 +39,49 @@ namespace TaskLogix.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Courses");
+                });
+
+            modelBuilder.Entity("TaskLogix.Models.File", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Files");
+                });
+
+            modelBuilder.Entity("TaskLogix.Models.ModelFiles", b =>
+                {
+                    b.Property<int>("FileID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ModelID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ModelName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("FileID");
+
+                    b.HasIndex("FileID");
+
+                    b.HasIndex("ModelID");
+
+                    b.ToTable("ModelFiles");
                 });
 
             modelBuilder.Entity("TaskLogix.Models.User", b =>
@@ -98,6 +141,17 @@ namespace TaskLogix.Migrations
                     b.HasIndex("CourseId");
 
                     b.ToTable("UserCourses");
+                });
+
+            modelBuilder.Entity("TaskLogix.Models.ModelFiles", b =>
+                {
+                    b.HasOne("TaskLogix.Models.File", "File")
+                        .WithMany()
+                        .HasForeignKey("FileID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("File");
                 });
 
             modelBuilder.Entity("TaskLogix.Models.UserCourse", b =>

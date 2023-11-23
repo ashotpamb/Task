@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TaskLogix.Migrations
 {
     /// <inheritdoc />
-    public partial class initailmigration : Migration
+    public partial class DBUPSERTV1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -29,6 +29,23 @@ namespace TaskLogix.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Courses", x => x.ID);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Files",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Path = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Files", x => x.ID);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -60,6 +77,28 @@ namespace TaskLogix.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "ModelFiles",
+                columns: table => new
+                {
+                    FileID = table.Column<int>(type: "int", nullable: false),
+                    ID = table.Column<int>(type: "int", nullable: false),
+                    ModelName = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ModelID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ModelFiles", x => x.FileID);
+                    table.ForeignKey(
+                        name: "FK_ModelFiles_Files_FileID",
+                        column: x => x.FileID,
+                        principalTable: "Files",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "UserCourses",
                 columns: table => new
                 {
@@ -85,6 +124,16 @@ namespace TaskLogix.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ModelFiles_FileID",
+                table: "ModelFiles",
+                column: "FileID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ModelFiles_ModelID",
+                table: "ModelFiles",
+                column: "ModelID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserCourses_CourseId",
                 table: "UserCourses",
                 column: "CourseId");
@@ -100,7 +149,13 @@ namespace TaskLogix.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "ModelFiles");
+
+            migrationBuilder.DropTable(
                 name: "UserCourses");
+
+            migrationBuilder.DropTable(
+                name: "Files");
 
             migrationBuilder.DropTable(
                 name: "Courses");
