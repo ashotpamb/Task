@@ -4,7 +4,9 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using TaskLogix.Controllers;
 using TaskLogix.Data;
+using TaskLogix.Factory;
 using TaskLogix.Models;
 using TaskLogix.Repositories;
 using TaskLogix.Seeders;
@@ -44,21 +46,27 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 //Auto Mapper configuration 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+builder.Logging.AddConsole();
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICourseReposiotry, CourseRepository>();
+builder.Services.AddSingleton<IEventService, EventService>();
+builder.Services.AddScoped<INotificationService>(provider =>
+{
+    return new EmailService("dsds");
+});builder.Services.AddScoped<IServiceFactory, NotificationFactory>();
+builder.Services.AddHostedService<EventServiceWorker>();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowLocalhost",
         builder =>
         {
-            builder.WithOrigins("http://localhost:3000") 
+            builder.WithOrigins("http://localhost:3000")
                 .AllowAnyHeader()
                 .AllowAnyMethod();
         });
 });
-// builder.Services.AddControllers().AddJsonOptions(x =>
-//                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 
 var app = builder.Build();
 app.UseCors("AllowLocalhost");

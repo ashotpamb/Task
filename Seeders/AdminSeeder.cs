@@ -13,6 +13,7 @@ namespace TaskLogix.Seeders
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
                 var hashPassword = new PasswordHasher<string>();
+                
                 string hashedPassword = hashPassword.HashPassword(null, "admin1234");
                 var adminExist = dbContext.Users.Where(c => c.Role == Roles.Admin).FirstOrDefault();
                 if (adminExist == null)

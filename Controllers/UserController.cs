@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using TaskLogix.Dtos;
 using TaskLogix.Models;
 using TaskLogix.Repositories;
+using TaskLogix.Services;
 
 namespace TaskLogix.Controllers
 {
@@ -16,12 +17,19 @@ namespace TaskLogix.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
-        public UserController(IUserRepository userRepository, IMapper mapper)
+        private readonly IEventService _eventService;
+
+        private readonly ILogger<UserController> _logger;
+
+        public UserController(ILogger<UserController> logger, IUserRepository userRepository, IMapper mapper, IEventService eventService)
         {
+            _logger = logger;
             _userRepository = userRepository;
             _mapper = mapper;
+            _eventService = eventService;
         }
 
+ 
         [HttpPost("Register", Name = "User Registration")]
         public async Task<ActionResult<UserCreateDto>> Register([FromBody] UserCreateDto userCreateDto)
         {
@@ -31,6 +39,7 @@ namespace TaskLogix.Controllers
 
             _userRepository.RegisterUser(user);
             _userRepository.SaveChanges();
+            _eventService.InvokeEvent(Events.Events.RegisterUser, user);
             return Ok(new { Message = "User registred success", Email = user.Email });
         }
 
