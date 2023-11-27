@@ -35,16 +35,8 @@ public class EventServiceWorker : IHostedService, IDisposable
         using (var scope = _serviceFactory.CreateScope())
         {
             var serviceFactory = scope.ServiceProvider.GetRequiredService<IServiceFactory>();
-            switch (globalEventArgs.EventType)
-            {
-                case Events.RegisterUser:
-                    var service = serviceFactory.GetNotificationService(globalEventArgs.EventType, globalEventArgs);
-                    service.SendNotificationAsync();
-                    Console.WriteLine("Logic after registration user");
-                    break;
-                default:
-                    throw new Exception("Event type not found");
-            }
+            var service = serviceFactory.GetNotificationService(globalEventArgs.EventType, globalEventArgs);
+            service.SendNotificationAsync();
         }
 
     }

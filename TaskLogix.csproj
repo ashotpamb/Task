@@ -13,6 +13,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.0"/>
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.0"/>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0"/>
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2"/>
+    <PackageReference Include="Newtonsoft.Json" Version="7.0.1"/>
   </ItemGroup>
 </Project>

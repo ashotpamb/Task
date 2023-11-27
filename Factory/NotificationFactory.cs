@@ -11,6 +11,9 @@ namespace TaskLogix.Factory
             {
                 case Events.Events.RegisterUser:
                     return new EmailService(globalEventArgs.Data.Email);
+                case Events.Events.UpdateUser:
+                    Console.WriteLine(globalEventArgs.Data);
+                    return default;
                 default:
                     throw new ArgumentException("Invalid Event type ");
             }

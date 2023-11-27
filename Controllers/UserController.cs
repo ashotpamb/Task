@@ -1,5 +1,7 @@
+using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Threading.RateLimiting;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -29,17 +31,17 @@ namespace TaskLogix.Controllers
             _eventService = eventService;
         }
 
- 
+
         [HttpPost("Register", Name = "User Registration")]
         public async Task<ActionResult<UserCreateDto>> Register([FromBody] UserCreateDto userCreateDto)
         {
             if (_userRepository.FindUserByEmail(userCreateDto.Email) != null) return BadRequest("Email already used");
-
             var user = _mapper.Map<User>(userCreateDto);
 
             _userRepository.RegisterUser(user);
             _userRepository.SaveChanges();
-            _eventService.InvokeEvent(Events.Events.RegisterUser, user);
+            _ = Task.Run(() => _eventService.InvokeEvent(Events.Events.RegisterUser, user));
+
             return Ok(new { Message = "User registred success", Email = user.Email });
         }
 
@@ -127,6 +129,7 @@ namespace TaskLogix.Controllers
             }
             try
             {
+                _eventService.InvokeEvent(Events.Events.UpdateUser, "test");
                 await _userRepository.DeleteCourse(Convert.ToInt32(currentUserId), courseId);
                 var user = _userRepository.GetCoursesForUser(Convert.ToInt32(currentUserId));
                 UserReadDto userReadDto = _mapper.Map<UserReadDto>(user);

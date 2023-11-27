@@ -1,10 +1,8 @@
 using System.Text;
-using System.Text.Json.Serialization;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using TaskLogix.Controllers;
 using TaskLogix.Data;
 using TaskLogix.Factory;
 using TaskLogix.Models;
@@ -14,7 +12,11 @@ using TaskLogix.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
+builder.Services.AddLogging(l =>
+{
+    l.ClearProviders();
+    l.SetMinimumLevel(LogLevel.None);
+});
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -51,10 +53,12 @@ builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICourseReposiotry, CourseRepository>();
 builder.Services.AddSingleton<IEventService, EventService>();
+
 builder.Services.AddScoped<INotificationService>(provider =>
 {
     return new EmailService("dsds");
-});builder.Services.AddScoped<IServiceFactory, NotificationFactory>();
+});
+builder.Services.AddScoped<IServiceFactory, NotificationFactory>();
 builder.Services.AddHostedService<EventServiceWorker>();
 
 builder.Services.AddCors(options =>
